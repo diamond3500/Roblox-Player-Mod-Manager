@@ -83,9 +83,18 @@ namespace RobloxPlayerModManager
                 var getData = http.DownloadStringTaskAsync(pkgManifestUrl);
                 pkgManifestData = await getData.ConfigureAwait(false);
                 int pkgManifestIndex = pkgManifestData.IndexOf("RobloxPlayerLauncher.exe");
+                int pkgManifestIndexNew = pkgManifestData.IndexOf("RobloxPlayerInstaller.exe");
                 if (pkgManifestIndex != pkgManifestIndex + 3)
                 {
-                    pkgManifestData = pkgManifestData.Remove(pkgManifestIndex);
+                    //TODO: Maybe make this better in the future.
+                    try
+                    {
+                        pkgManifestData = pkgManifestData.Remove(pkgManifestIndex);
+                    }
+                    catch (ArgumentOutOfRangeException)
+                    {
+                        pkgManifestData = pkgManifestData.Remove(pkgManifestIndexNew);
+                    }
                 }
 
             }

@@ -273,7 +273,7 @@ namespace RobloxPlayerModManager
         private static string GetQueryParameterValue(Uri uri, string paramName)
         {
             string query = uri.Query;
-            if (query.StartsWith("?"))
+            if (query.StartsWith("?", System.StringComparison.InvariantCulture))
             {
                 query = query.Substring(1);
             }
@@ -504,40 +504,6 @@ namespace RobloxPlayerModManager
 
             var latest = VersionInfo.Version;
 
-            // Detects if the version is older or newer depending on channel
-            string currentVersion = Program.State.VersionData.Version;
-            //string currentChannel = Program.State.Channel;
-
-            //versionstate.Text = $"version is {currentVersion.Replace(".", "")} of channel {channel}";
-            // Define a culture-specific format provider, e.g., using the "en-US" culture.
-            System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-US");
-
-            if (Int64.TryParse(currentVersion.Replace(".", ""), NumberStyles.Any, culture, out long currentVersionValue) &&
-                Int64.TryParse(latest.Replace(".", ""), NumberStyles.Any, culture, out long latestValue) && currentVersion != null)
-            {
-                if (currentVersionValue < latestValue)
-                {
-                    versionstate.Text = "Roblox is not up-to-date!";
-                    versionstate.ForeColor = Color.Red;
-                }
-                else if (currentVersionValue == latestValue)
-                {
-                    versionstate.Text = "Roblox is up-to-date!";
-                    versionstate.ForeColor = Color.Green;
-                }
-                else
-                {
-                    versionstate.Text = "Older version selected!";
-                    versionstate.ForeColor = Color.Red;
-                }
-            }
-            else
-            {
-                // Handle the case where parsing fails, e.g., currentVersion is not a valid number.
-                versionstate.Text = "Invalid version format!";
-                versionstate.ForeColor = Color.Red;
-            }
-
             // Clear the current list of target items.
             targetVersion.Items.Clear();
             targetVersion.Items.Add(latest);
@@ -571,7 +537,13 @@ namespace RobloxPlayerModManager
                     .ToArray();
 
                 targetVersion.Items.AddRange(items);
+                // Remove the first item which is the latest version gotten from the ClientSettings API and reselect the first item.
+                targetVersion.Items.RemoveAt(0);
+                targetVersion.SelectedIndex = 0;
             }
+
+            // Refresh the version check.
+            versionCheck();
 
             // Select the deploy log being targetted.
             DeployLog target = targets
@@ -588,16 +560,71 @@ namespace RobloxPlayerModManager
             targetVersion.SelectedItem = latest;
         }
 
+        private void versionCheck()
+        {
+            string latest = targetVersion.Items[0].ToString();
+
+            // Detects if the version is older or newer depending on channel
+            string currentVersion = targetVersion.SelectedItem.ToString();
+            //string currentChannel = Program.State.Channel;
+
+            currentVersion = Regex.Replace(currentVersion, @"\([^()]*\)", "");
+            string InstalledVersion = Program.State.VersionData.Version;
+            latest = Regex.Replace(latest, @"\([^()]*\)", "");
+
+            // print currentversion and latest in the console for debugging purposes
+            //Console.WriteLine($"Current Version: {currentVersion}");
+            //Console.WriteLine($"Latest Version: {latest}");
+
+            //versionstate.Text = $"version is {currentVersion.Replace(".", "")} of channel {channel}";
+
+            // This is to force the numbers to use the correct format
+            System.Globalization.CultureInfo culture = new System.Globalization.CultureInfo("en-US");
+
+            if (Int64.TryParse(currentVersion.Replace(".", ""), NumberStyles.Any, culture, out long currentVersionValue) &&
+                Int64.TryParse(latest.Replace(".", ""), NumberStyles.Any, culture, out long latestValue) &&
+                Int64.TryParse(InstalledVersion.Replace(".", ""), NumberStyles.Any, culture, out long installedVersionValue) && currentVersion != null)
+            {
+                if (currentVersionValue < latestValue || currentVersionValue < installedVersionValue)
+                {
+                    versionstate.Text = "Older version selected!";
+                    versionstate.ForeColor = Color.Orange;
+                }
+                else if (installedVersionValue < latestValue)
+                {
+                    versionstate.Text = "Roblox is not up-to-date!";
+                    versionstate.ForeColor = Color.Red;
+                }
+                else if (currentVersionValue == latestValue)
+                {
+                    versionstate.Text = "Roblox is up-to-date!";
+                    versionstate.ForeColor = Color.Green;
+                }
+            }
+            else
+            {
+                // Handle the case where parsing fails, e.g., currentVersion is not a valid number.
+                versionstate.Text = "Invalid version format!";
+                versionstate.ForeColor = Color.Red;
+            }
+        }
+
         private void targetVersion_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (targetVersion.SelectedIndex == 0)
             {
+                // Refresh the version check.
+                versionCheck();
+
                 Program.State.TargetVersion = "";
                 return;
             }
 
             var target = targetVersion.SelectedItem as DeployLog;
             Program.State.TargetVersion = target.VersionId;
+
+            // Refresh the version check.
+            versionCheck();
         }
 
         private async void selectChannel(string text)

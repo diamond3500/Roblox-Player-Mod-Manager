@@ -49,16 +49,29 @@
             this.ping = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.players = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.setServerJoin = new System.Windows.Forms.DataGridViewButtonColumn();
+            this.deploymentLogsPage = new System.Windows.Forms.TabPage();
+            this.label7 = new System.Windows.Forms.Label();
+            this.channelTextBox = new System.Windows.Forms.TextBox();
+            this.deploymentLogsDataGridView = new System.Windows.Forms.DataGridView();
+            this.changelist = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.version = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.date = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.fileVersion = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.gitHash = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label8 = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.extraPatchesPage.SuspendLayout();
             this.serversPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.deploymentLogsPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.deploymentLogsDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.extraPatchesPage);
             this.tabControl1.Controls.Add(this.serversPage);
+            this.tabControl1.Controls.Add(this.deploymentLogsPage);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Name = "tabControl1";
@@ -181,6 +194,7 @@
             // 
             // serversPage
             // 
+            this.serversPage.Controls.Add(this.label8);
             this.serversPage.Controls.Add(this.label1);
             this.serversPage.Controls.Add(this.placeIdTextBox);
             this.serversPage.Controls.Add(this.button1);
@@ -196,7 +210,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(443, 29);
+            this.label1.Location = new System.Drawing.Point(444, 10);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(43, 13);
             this.label1.TabIndex = 7;
@@ -204,14 +218,14 @@
             // 
             // placeIdTextBox
             // 
-            this.placeIdTextBox.Location = new System.Drawing.Point(337, 26);
+            this.placeIdTextBox.Location = new System.Drawing.Point(338, 6);
             this.placeIdTextBox.Name = "placeIdTextBox";
             this.placeIdTextBox.Size = new System.Drawing.Size(100, 20);
             this.placeIdTextBox.TabIndex = 6;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(256, 24);
+            this.button1.Location = new System.Drawing.Point(257, 5);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 5;
@@ -231,9 +245,10 @@
             this.players,
             this.setServerJoin});
             this.dataGridView1.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dataGridView1.Location = new System.Drawing.Point(7, 52);
+            this.dataGridView1.Location = new System.Drawing.Point(3, 32);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(760, 311);
+            this.dataGridView1.RowHeadersVisible = false;
+            this.dataGridView1.Size = new System.Drawing.Size(770, 350);
             this.dataGridView1.TabIndex = 4;
             // 
             // serverId
@@ -265,6 +280,99 @@
             this.setServerJoin.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.setServerJoin.Text = "Join Server";
             // 
+            // deploymentLogsPage
+            // 
+            this.deploymentLogsPage.Controls.Add(this.label7);
+            this.deploymentLogsPage.Controls.Add(this.channelTextBox);
+            this.deploymentLogsPage.Controls.Add(this.deploymentLogsDataGridView);
+            this.deploymentLogsPage.Location = new System.Drawing.Point(4, 22);
+            this.deploymentLogsPage.Name = "deploymentLogsPage";
+            this.deploymentLogsPage.Padding = new System.Windows.Forms.Padding(3);
+            this.deploymentLogsPage.Size = new System.Drawing.Size(776, 385);
+            this.deploymentLogsPage.TabIndex = 2;
+            this.deploymentLogsPage.Text = "Deployment Logs";
+            this.deploymentLogsPage.UseVisualStyleBackColor = true;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(268, 10);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(46, 13);
+            this.label7.TabIndex = 2;
+            this.label7.Text = "Channel";
+            // 
+            // channelTextBox
+            // 
+            this.channelTextBox.Location = new System.Drawing.Point(320, 6);
+            this.channelTextBox.Name = "channelTextBox";
+            this.channelTextBox.Size = new System.Drawing.Size(137, 20);
+            this.channelTextBox.TabIndex = 1;
+            this.channelTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.channelTextBox_KeyDown);
+            // 
+            // deploymentLogsDataGridView
+            // 
+            this.deploymentLogsDataGridView.AllowUserToAddRows = false;
+            this.deploymentLogsDataGridView.AllowUserToDeleteRows = false;
+            this.deploymentLogsDataGridView.AllowUserToResizeColumns = false;
+            this.deploymentLogsDataGridView.AllowUserToResizeRows = false;
+            this.deploymentLogsDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.deploymentLogsDataGridView.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.changelist,
+            this.version,
+            this.date,
+            this.fileVersion,
+            this.gitHash});
+            this.deploymentLogsDataGridView.Location = new System.Drawing.Point(3, 29);
+            this.deploymentLogsDataGridView.Name = "deploymentLogsDataGridView";
+            this.deploymentLogsDataGridView.RowHeadersVisible = false;
+            this.deploymentLogsDataGridView.RowHeadersWidthSizeMode = System.Windows.Forms.DataGridViewRowHeadersWidthSizeMode.AutoSizeToAllHeaders;
+            this.deploymentLogsDataGridView.Size = new System.Drawing.Size(770, 353);
+            this.deploymentLogsDataGridView.TabIndex = 0;
+            // 
+            // changelist
+            // 
+            this.changelist.HeaderText = "Changelist N°";
+            this.changelist.Name = "changelist";
+            this.changelist.ReadOnly = true;
+            this.changelist.Width = 130;
+            // 
+            // version
+            // 
+            this.version.HeaderText = "Version";
+            this.version.Name = "version";
+            this.version.ReadOnly = true;
+            // 
+            // date
+            // 
+            this.date.HeaderText = "Date";
+            this.date.Name = "date";
+            this.date.ReadOnly = true;
+            this.date.Width = 153;
+            // 
+            // fileVersion
+            // 
+            this.fileVersion.HeaderText = "File Version";
+            this.fileVersion.Name = "fileVersion";
+            this.fileVersion.ReadOnly = true;
+            this.fileVersion.Width = 90;
+            // 
+            // gitHash
+            // 
+            this.gitHash.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.gitHash.HeaderText = "Git Hash";
+            this.gitHash.Name = "gitHash";
+            this.gitHash.ReadOnly = true;
+            // 
+            // label8
+            // 
+            this.label8.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label8.Location = new System.Drawing.Point(509, 6);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(261, 20);
+            this.label8.TabIndex = 0;
+            this.label8.Text = "The \"Join Server\" Feature isn\'t done yet";
+            // 
             // Extra
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -285,6 +393,9 @@
             this.serversPage.ResumeLayout(false);
             this.serversPage.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.deploymentLogsPage.ResumeLayout(false);
+            this.deploymentLogsPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.deploymentLogsDataGridView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -311,5 +422,15 @@
         private System.Windows.Forms.Label label6;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.ComboBox graphicsApisComboBox;
+        private System.Windows.Forms.TabPage deploymentLogsPage;
+        private System.Windows.Forms.DataGridView deploymentLogsDataGridView;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.TextBox channelTextBox;
+        private System.Windows.Forms.DataGridViewTextBoxColumn changelist;
+        private System.Windows.Forms.DataGridViewTextBoxColumn version;
+        private System.Windows.Forms.DataGridViewTextBoxColumn date;
+        private System.Windows.Forms.DataGridViewTextBoxColumn fileVersion;
+        private System.Windows.Forms.DataGridViewTextBoxColumn gitHash;
+        private System.Windows.Forms.Label label8;
     }
 }

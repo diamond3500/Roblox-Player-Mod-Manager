@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using Microsoft.Build.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RobloxDeployHistory;
 using MessageBox = System.Windows.Forms.MessageBox;
 using SystemColors = System.Drawing.SystemColors;
 
@@ -28,7 +29,8 @@ namespace RobloxPlayerModManager.Forms
         public Extra()
         {
             InitializeComponent();
-            if (placeId != null) {
+            if (placeId != null)
+            {
                 placeIdTextBox.Text = placeId;
             }
         }
@@ -62,7 +64,7 @@ namespace RobloxPlayerModManager.Forms
 
                     // Example output to demonstrate accessing the values for each server
                     //MessageBox.Show($"Server ID: {serverId}\nMax Players: {maxPlayers}\nCurrent Players: {currentPlayers}\nFirst Player Token: {(playerTokens.Count > 0 ? playerTokens[0] : "N / A")}");
-                    dataGridView1.Rows.Add(serverId, ping, $"{currentPlayers}/{maxPlayers}","Set Server");
+                    dataGridView1.Rows.Add(serverId, ping, $"{currentPlayers}/{maxPlayers}", "Set Server");
                 }
             }
             else
@@ -255,6 +257,24 @@ namespace RobloxPlayerModManager.Forms
                     AddFVariable("FFlag", "DebugGraphicsPreferPreferD3D11FL10", "False");
                     AddFVariable("FFlag", "DebugGraphicsPreferD3D11", "False");
                     break;
+            }
+        }
+
+        private async void channelTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                PlayerDeployLogs channelLogs = await PlayerDeployLogs.Get(channelTextBox.Text, true).ConfigureAwait(true);
+
+                if (channelLogs != null)
+                {
+                    deploymentLogsDataGridView.Rows.Clear();
+
+                    foreach (var item in channelLogs.CurrentLogs_x86)
+                    {
+                        deploymentLogsDataGridView.Rows.Add(item.Changelist, item.VersionId, item.TimeStamp, item.Version, item.GitHash);
+                    }
+                }
             }
         }
     }

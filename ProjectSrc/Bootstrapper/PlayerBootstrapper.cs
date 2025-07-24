@@ -341,7 +341,7 @@ namespace RobloxPlayerModManager
             DeployLog build_x86 = logData.CurrentLogs_x86.LastOrDefault();
             DeployLog build_x64 = logData.CurrentLogs_x64.LastOrDefault();
 
-            if (is64Bit)
+            if (is64Bit && build_x64 != null)
                 info = new ClientVersionInfo(build_x64);
             else
                 info = new ClientVersionInfo(build_x86);
