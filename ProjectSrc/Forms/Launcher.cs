@@ -539,11 +539,7 @@ namespace RobloxPlayerModManager
                 targetVersion.Items.AddRange(items);
                 // Remove the first item which is the latest version gotten from the ClientSettings API and reselect the first item.
                 targetVersion.Items.RemoveAt(0);
-                targetVersion.SelectedIndex = 0;
             }
-
-            // Refresh the version check.
-            versionCheck();
 
             // Select the deploy log being targetted.
             DeployLog target = targets
@@ -553,15 +549,22 @@ namespace RobloxPlayerModManager
             if (target != null)
             {
                 targetVersion.SelectedItem = target;
-                return;
+            }
+            else
+            {
+                // If the target isn't valid, fallback to live.
+                targetVersion.SelectedItem = latest;
             }
 
-            // If the target isn't valid, fallback to live.
-            targetVersion.SelectedItem = latest;
+            // Refresh the version check.
+            versionCheck();
         }
 
         private void versionCheck()
         {
+            if (targetVersion.Items.Count == 0 || targetVersion.SelectedItem == null)
+                return;
+
             string latest = targetVersion.Items[0].ToString();
 
             // Detects if the version is older or newer depending on channel

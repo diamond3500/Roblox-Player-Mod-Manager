@@ -78,6 +78,8 @@ namespace RobloxPlayerModManager
             string pkgManifestUrl = $"{channel.BaseUrl}/{versionGuid}-rbxPkgManifest.txt";
             string pkgManifestData;
 
+            System.Diagnostics.Debug.WriteLine($"Package manifest URL: {pkgManifestUrl}");
+
             using (WebClient http = new WebClient())
             {
                 var getData = http.DownloadStringTaskAsync(pkgManifestUrl);
